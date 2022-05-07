@@ -1,0 +1,42 @@
+### INSERT
+插入及系统安全 可针对每个表或每个用户，利用MySQL的安全机制禁止使用INSERT 语句  
+INSERT 语句一般不会产生输出。
+
+只要每条INSERT 语句中的列名（和次序）相同，可以如下组合各语句：  
+`INSERT INTO customers(cust_name,
+   cust_address,
+   cust_city,
+   cust_state,
+   cust_zip,
+   cust_country)
+VALUES(
+        'Pep E. LaPew',
+        '100 Main Street',
+        'Los Angeles',
+        'CA',
+        '90046',
+        'USA'
+     ),
+      (
+        'M. Martian',
+        '42 Galaxy Way',
+        'New York',
+        'NY',
+        '11213',
+        'USA'
+   );`
+   
+INSERT SELECT 中 MySQL不关心SELECT 返回的列名。它使用的是列的位置。这对于从使用不同列名的表中导入数据非常有用。
+   
+### UPDATE
+UPDATE 语句由3部分组成：要更新的表；列名和它们的新值；确定要更新行的过滤条件。  
+SET 命令用来将新值赋给被更新的列。UPDATE 语句以WHERE 子句结束，它告诉MySQL更新哪一行。在更新多个列时，只需要使用单个SET 命令，每个“列=值”对之间用逗号分隔。  
+可使用IGNORE 关键字，以免更新时出现一点错误就取消整个UPDATE操作。
+
+为了删除某个列的值，可设置它为NULL （假如表定义允许NULL 值）。
+
+### DELETE
+为了从一个表中删除（去掉）数据，使用DELETE 语句。  
+DELETE 不需要列名或通配符。DELETE 删除整行而不是删除列。DELETE 不删除表本身。  
+TRUNCATE TABLE 语句，它完成相同的工作，但速度更快（TRUNCATE 实际是删除原来的表并重新创建一个表，而不是逐行删除表中的数据）。  
+MySQL没有撤销（undo）按钮。应该非常小心地使用UPDATE 和DELETE 
