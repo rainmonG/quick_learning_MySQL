@@ -1,5 +1,7 @@
 ﻿### 第1章 了解SQL
 
+SQL由很少的词构成，语句全都是由描述性很强的英语单词组成。
+
 Sams Teach Yourself SQL in 10 Minutes （中文版《SQL必知必会》，人民邮电出版社出版）为了简化SQL的讲解，（尽可能）只写各种主要的DBMS通用的SQL语句，舍弃了一些更好的、针对具体DBMS的解决方案。此外顾及到不同DBMS的可移植性，无法详细讲解比较高级的内容，如触发器、游标、存储过程、访问控制、事务等。
 
 本书沿用了前一本书业已成功的教程模式和组织结构，除了MySQL以外，不在其他内容上过多纠缠。书从简单的数据检索开始，逐步进入一些复杂的内容，包括联结的使用、子查询、正则 表达式和基于全文本的搜索、存储过程、游标、触发器、表约束，等等。
@@ -25,21 +27,57 @@ Sams Teach Yourself SQL in 10 Minutes （中文版《SQL必知必会》，人民
 
 --------------------
 
-### 第2章 MySQL简介
-
-SQL由很少的词构成，语句全都是由描述性很强的英语单词组成
-
---------------------
-
 ### 附录B 样例表
 
 本书中使用的样例表为一个想象的随身物品推销商使用的订单录入系统，这些表用来完成以下几个任务：
 
 管理供应商；  
-管理产品目录； 
-管理顾客列表； 
-录入顾客订单。
+管理产品目录；   
+管理顾客列表；   
+录入顾客订单。 
 
 要完成这几个任务需要作为关系数据库设计成分的紧密联系的6个表。表的列出顺序按照它们之间的依赖关系。
 
---------------------
+##### vendors 表存储销售产品的供应商
+vend_id	唯一的供应商ID  
+vend_name	供应商名  
+vend_address	供应商的地址  
+vend_city	供应商的城市  
+vend_state	供应商的州  
+vend_zip	供应商的邮政编码  
+vend_country	供应商的国家  
+##### products 表包含产品目录
+prod_id	唯一的产品ID  
+vend_id	产品供应商ID（关联到vendors 表中的vend_id，外键，实施引用完整性）  
+prod_name	产品名  
+prod_price	产品价格  
+prod_desc	产品描述  
+##### customers 表存储所有顾客的信息
+cust_id	唯一的顾客ID  
+cust_name	顾客名  
+cust_address	顾客的地址  
+cust_city	顾客的城市  
+cust_state	顾客的州  
+cust_zip	顾客的邮政编码  
+cust_country	顾客的国家  
+cust_contact	顾客的联系名  
+cust_email	顾客的联系emal地址  
+##### orders 表存储顾客订单（但不是订单细节）
+order_num	唯一订单号  
+order_date	订单日期  
+cust_id	订单顾客ID（关系到customers 表的 cust_id ）  
+##### orderitems 表存储每个订单中的实际物品
+order_num	订单号（关联到orders 表的order_num ）  
+order_item	订单物品号（在某个订单中的顺序）  
+prod_id	产品ID（关联到products 表的prod_id ）  
+quantity	物品数量  
+item_price	物品价格  
+##### productnotes 表存储与特定产品有关的注释
+note_id	唯一注释ID  
+prod_id	产品ID（对应于products 表中的prod_id ）  
+note_date	增加注释的日期  
+note_text	注释文本
+
+列note_text 必须为FULLTEXT 搜索进行索引。
+
+由于这个表使用全文本搜索，因此必须指定ENGINE=MyISAM 。
